@@ -1,3 +1,3 @@
-# rohanthorat.github.io
+# rohan-thorat.github.io
 
 Personal Website
