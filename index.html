@@ -1,21 +1,49 @@
+ <html>
+ <head>
  <style>
 .content {
   max-width: 750px;
   margin: auto;
 }
+
+/* When it is unvisited link */  
+a:link {
+color: #7393B3;
+}
+
+/* When it is visited link */
+a:visited {
+color: #7393B3;
+}
+
+/* When you mouse over link */
+a:hover {
+color: red;
+}
+
+/* When it is selected link */
+a:active {
+color: blue;
+}
 </style>
+</head>
+
+
+
 <body text="grey">
-<h4 align="right">about</h4>
+<h4 align="middle">about</h4>
  <hr>
 <div class="content">
-  <img align="right" src="/images/profile_pic.jpg" alt="profile picture" height="200" />
+  
  <h3>Rohan Thorat</h3>
- <h5>IIT, Delhi.</h5>
+ <a style="text-decoration:none;" href="https://home.iitd.ac.in/" target="_main"> IIT, Delhi. </a>
+ <img align="right" src="/images/profile_pic.jpg" alt="profile picture" height="200" />
   <p>Hi, my name is rohan. I have recently completed my master's from IIT Delhi. </p>
-  <a href="https://twitter.com/rohan_v_thorat" target="_main"> twitter </a>
+  <a style="text-decoration:none;" href="https://twitter.com/rohan_v_thorat" target="_main"> twitter </a>
   
   <h3>Do visit again</h3>
 </div>
 
 </body> 
 
+</html>
