@@ -478,10 +478,10 @@ No. State-value function \(V(s)\) definition is dependent on objective function 
 <hr>
 Initialize parameters \(s\), \(\theta\), \(\phi\) and learning rate \(\alpha_\theta\), \(\alpha_\phi\)<br>
 <b>for</b> \(t=1...T\)
-<p style="margin-left:20pt;margin-top:0pt">Sample the action \(a \sim \pi_\theta'(a|s)\)<br>
+<p style="margin-left:20pt;margin-top:0pt">Sample the action \(a \sim \pi_\theta(s)\)<br>
 Sample next state \(s' \sim P(s'|s,a)\) and reward \(r = f(s,a,s')\) from environment<br>
 Update: 
-<p style="margin-left:70pt;margin-top:-20pt">\(\theta=\theta+\alpha_\theta\nabla_\theta\log(\pi_\theta'(a|s))(r+V_\phi(s')-V_\phi(s))\)<br>
+<p style="margin-left:70pt;margin-top:-20pt">\(\theta=\theta+\alpha_\theta\nabla_\theta\log(\pi_\theta(a|s))(r+V_\phi(s')-V_\phi(s))\)<br>
 \(\phi = \phi - \alpha_\phi\nabla_\phi(r+V_\phi(s')-V_\phi(s))\)</p>
 \(\hspace{1.8em}\)<b>set</b> \(\hspace{0.5em}s\leftarrow s'\)<br>
 <b>end</b></p>
