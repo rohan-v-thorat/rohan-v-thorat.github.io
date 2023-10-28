@@ -443,9 +443,9 @@ Using above equation we can not update the policy at each timestep as we need at
 \end{equation*}
 This above equation do not need to know the reward across the whole trajectory. Hence, it can be used to update policy at each timestep. The T.D puts a constraint on the updatation of policy and has effects as follow:
 \begin{align*}
-	r_i + \gamma V_\phi(s_{i+1})>V_\phi(s_{i})&\rightarrow\text{update \(\theta\) in the estimated direction of }\nabla_\theta \log(a|s)\\
+	r_i + \gamma V_\phi(s_{i+1})>V_\phi(s_{i})&\rightarrow\text{update's \(\theta\) in the direction of estimated }\nabla_\theta \log(a|s)\\
 	r_i + \gamma V_\phi(s_{i+1})=V_\phi(s_{i})&\rightarrow\text{no update; might have reached optimum solution}\\
-	r_i + \gamma V_\phi(s_{i+1})< V_\phi(s_{i})&\rightarrow \text{update \(\theta\) in opposite of estimated direction of }\nabla_\theta \log(a|s)
+	r_i + \gamma V_\phi(s_{i+1})< V_\phi(s_{i})&\rightarrow \text{update's \(\theta\) in the opposite direction of estimated }\nabla_\theta \log(a|s)
 \end{align*}
 \(\\[20pt]\)
 <div align ="middle" class="content">
