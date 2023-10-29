@@ -175,7 +175,7 @@ Pre-requisite: Basics of Reinforcement Learning (RL)<br>
 
 <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Introduction%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
 <h2 id="Intro" style="color:#666666">Introduction</h2>
-In reinforcement learning, Agent interacts with the environment to learn a policy. This policy can be represented as \(\pi_{\theta}\) parameterized by \(\theta\) which is a distribution over action for given state i.e \(a \sim \pi_{\theta}(s)\). The policy usually is represented by \(\pi\) as it is stochastic in nature, this stochasticity makes the agent capable of exploring the environment. We need to know few notations:
+In reinforcement learning, Agent interacts with the environment to learn a policy. This policy can be represented as \(\pi_{\theta}\) parameterized by \(\theta\) which is a distribution over action for a given state i.e \(a \sim \pi_{\theta}(s)\). The policy usually is represented by \(\pi\) as it is stochastic in nature, this stochasticity makes the agent capable of exploring the environment. We need to know few notations:
 \begin{align*}
 	s_i & \leftarrow \text{state of the agent at }i^{\text{th}}\text{ timestep}\\
 	a_i & \leftarrow \text{action taken by the agent based on }s_i\\
@@ -277,11 +277,11 @@ To transform this integral into \(\mathop{\mathbb{E}}\)[] from, we need atleast 
 	=& \int \pi'_\theta(\tau) \bigg[ \nabla_\theta \log (\pi'_\theta(\tau)) R(\tau) \bigg] d\tau \hspace{2em}\because \nabla_x\log f(x)= \frac{\nabla_x(f(x))}{f(x)}\\
 	=& \mathop{\mathbb{E}}_{\tau \sim \pi'_{\theta}}[\nabla_\theta \log (\pi'_\theta(\tau)) R(\tau)]
 \end{align*}
-Cheers we did it !!! We finally were able to write \(\nabla_\theta J(\theta)\) in terms of \(\mathop{\mathbb{E}}\)[], now we can do monte-carlo approximation.
+Cheers, we did it !!! We finally were able to write \(\nabla_\theta J(\theta)\) in terms of \(\mathop{\mathbb{E}}\)[], now we can do monte-carlo approximation.
 \begin{equation*}
 	\nabla_\theta J(\theta) \approx \sum_{j=1}^{N} \nabla_\theta \log (\pi'_\theta(\tau_j)) R(\tau_j)
 \end{equation*}
-Okay, so we have successfully approximated the integration but we have more work to do. Now we have other problem, \(\pi^{'}_\theta(\tau)\) is not known to us so we can not take gradient of it. Lets replace \(\pi'_\theta(\tau)\) by equation \ref{eq:prob_of_tau}
+Okay, so we have successfully approximated the integration but we have more work to do. Now we have another problem, \(\pi^{'}_\theta(\tau)\) is not known to us so we can not take gradient of it. Lets replace \(\pi'_\theta(\tau)\) by equation \ref{eq:prob_of_tau}
 \begin{align*}
 	\nabla_\theta J(\theta) =& \sum_{j=1}^{N} \nabla_\theta \log (\pi'_\theta(\tau_j)) R(\tau_j)\\
 				=& \sum_{j=1}^{N} \nabla_\theta \big[\log( p(s_{0,j}) \prod_{i=0}^{T-1} \pi_\theta(a_{i,j}|s_{i,j})p(s_{i+1,j}|s_{i,j},a_{i,j}) )\big]R(\tau_j)\\
@@ -300,14 +300,14 @@ REINFORCE idea was originated in 1992 in <a style="text-decoration:none;" href="
 1) <i>Policy gradient with reward-to-go</i><br>
 2) <i>Policy gradient with baseline</i>
 <p>
-we will understand both the technique intuituively as well as with it's mathematical proof.</p>
+we will understand both the technique intuitively as well as with its mathematical proof.</p>
 <div class="wrap-collabsible">
   <input id="collapsible3" class="toggle" type="checkbox">
   <label for="collapsible3" class="lbl-toggle">Why are we facing variance problem?</label>
   <div class="collapsible-content">
     <div class="content-inner">
       <p>
-The variance issue arised because we have approximated the \(\mathop{\mathbb{E}}_{x \sim p(x)}[f(x)]\). One of the solution to reduce the variance is to use more no. of samples while doing Monte-Carlo approximation. But using more no. of samples means it would need more compute power which is not always a feasible option. Instead one could replace \(f(x)\) with some other function such that it needs less no. of sample to approximate its \(\mathop{\mathbb{E}}\)[]. This approach is called Variance reduction technique. 
+The variance issue arised because we have approximated the \(\mathop{\mathbb{E}}_{x \sim p(x)}[f(x)]\). One of the solutions to reduce the variance is to use more no. of samples while doing Monte-Carlo approximation. But using more no. of samples means it would need more compute power which is not always a feasible option. Instead one could replace \(f(x)\) with some other function such that it needs less no. of sample to approximate its \(\mathop{\mathbb{E}}\)[]. This approach is called Variance reduction technique. 
       </p>
     </div>
   </div>
@@ -338,10 +338,10 @@ Lets write the \(\nabla_\theta J(\theta)\) equation in terms of \(\mathop{\mathb
 </div>
 <h3 id="RTG" style="color:#666666">1) Policy gradient with reward-to-go</h3>
 <h4 style="color:#666666">Intuition:</h4>
-Till now we had used total reward/return in our equation. Now it's time to improve our objective by removing things which are irrelevant to us. Let's think on one thing, <i>what is the motive of agent while it takes a action?</i> Is it to gain more reward in future or is it also to affect the past reward(which is not possible)….. a big NO! So why to keep past reward in our objective function. This is were a new term reward-to-go is introduced which take into the account only the futuristic reward.
+Till now we had used total reward/return in our equation. Now it's time to improve our objective by removing things that are irrelevant to us. Let's think about one thing, <i>what is the motive of agent while it takes a action?</i> Is it to gain more reward in future or is it also to affect the past reward(which is not possible)….. a big NO! So why to keep past reward in our objective function. This is were a new term reward-to-go is introduced which take into the account only the futuristic reward.
 <h4 style="color:#666666">Mathematical proof: </h4>
 <h4 id="RTG_bias" style="color:#666666"><i>No-Bias proof</i> </h4>
-While we try to reduce the variance it is important to keep mind that this Variance reduction technique should not add any bias in our estimated \(\nabla_\theta J(\theta)\). <br>
+While we try to reduce the variance it is important to keep in mind that this Variance reduction technique should not add any bias in our estimated \(\nabla_\theta J(\theta)\). <br>
 \(\textbf{To prove:}\) 
 \begin{equation*}
 \mathop{\mathbb{E}}_{\tau \sim \pi'_\theta}\big[ \sum_{i=0}^{T-1}\nabla_\theta\log( \pi_\theta(a_{i}|s_{i}))R(\tau)\big] = \mathop{\mathbb{E}}_{\tau \sim \pi'_\theta}\big[ \sum_{i=0}^{T-1}\nabla_\theta\log( \pi_\theta(a_{i}|s_{i}))R_i\big]
@@ -356,7 +356,7 @@ While we try to reduce the variance it is important to keep mind that this Varia
 	&\;\;\;\;+ \mathop{\mathbb{E}}_{\tau \sim \pi'_\theta}\big[\sum_{i=0}^{T-1}\nabla_\theta\log( \pi_\theta(a_{i}|s_{i}))R_i\big]  \label{RTG_bias_1}\\
 	& \hspace{2em}\because\mathop{\mathbb{E}}\text{[ ] is linear operator}\notag
 \end{align}
-<p style=" margin-left: 60pt"> Now we need to see whether we can equate first term from Equation \ref{RTG_bias_1} to zero then our proof would be complete.<p/>
+<p style=" margin-left: 60pt"> Now we need to see whether we can equate the first term from Equation \ref{RTG_bias_1} to zero then our proof would be complete.<p/>
 \begin{align}
 	\mathop{\mathbb{E}}_{\tau \sim \pi'_\theta}\big[ \sum_{i=1}^{T-1}\nabla_\theta\log( \pi_\theta(a_{i}|s_{i}))(\sum_{k=0}^{i-1}r(s_k,a_k,s_{k+1}))\big] &= \underbrace{\mathop{\mathbb{E}}_{\tau \sim \pi'_\theta}\big[ \sum_{i=1}^{T-1}\nabla_\theta\log( \pi_\theta(a_{i}|s_{i}))\big]}_\text{=0} \notag\\
 	& \times\mathop{\mathbb{E}}_{\tau \sim \pi'_\theta}\big[(\sum_{k=0}^{i-1}r(s_k,a_k,s_{k+1}))\big] \notag\\
@@ -376,7 +376,7 @@ Var(\big[ \sum_{i=0}^{T-1}\nabla_\theta\log( \pi_\theta(a_{i}|s_{i}))R(\tau)\big
 <h3 id="BL" style="color:#666666">2) Policy gradient with baseline</h3>
 
 <h4 style="color:#666666">Intuition:</h4>
-Baseline helps the agent to know whether the taken action was better than average or below average. Action taken by the agent is average ideally only when the agent start to explore similar trajectory everytime and this indicates that now there is no need to update the policy.
+Baseline helps the agent to know whether the action taken was better than average or below average. Action taken by the agent is average ideally only when the agent starts to explore a similar trajectory every time and this indicates that now there is no need to update the policy.
 <h3 style="color:#666666">Mathematical proof:</h3>
 
 <h4 id="BL_bias" style="color:#666666"><i>No-Bias proof</i> </h4>
@@ -419,13 +419,13 @@ Var[x]&=\mathop{\mathbb{E}}[x^2] + \mathop{\mathbb{E}}[x]^2\\
 <h2 id="AC" style="color:#666666">Actor-Critic Method</h2>
 <p style="margin-left:60pt;margin-right:60pt">“Give me six hours to chop down a tree and I will spend the first four sharpening the axe.” - Abraham Lincoln</p>
 
-The framework of this method is build on REINFORCE with baseline method. As we have understood about REINFORCE with baseline method earlier our axe is well sharpen and now it will not take much time to understand Actor-Critic method. Agent in reinforcement learning is termed as Actor and along with 'Actor' model we have one more model named 'Critic' model. This Critic model helps the agent to learn the policy smoothly and has few more advantage which we will get to know when we see it's mathematical equation's
+The framework of this method is build on REINFORCE with baseline method. As we have understood about REINFORCE with baseline method earlier our axe is well sharpened and now it will not take much time to understand Actor-Critic method. Agent in reinforcement learning is termed as Actor and along with 'Actor' model we have one more model named 'Critic' model. This Critic model helps the agent to learn the policy smoothly and has few more advantage which we will get to know when we see it's mathematical equation's
 \(\\[20pt]\)
 <div align ="middle" class="content">
   <img src="blogs-images/actor-critic.jpg" style="width:65%"> 
 </div>  
 <br>
-From above figure, we can see that the reward is not directly recieved by the agent i.e Actor but it is feed into Critic model which gives Temporal Difference (TD) error to the Actor. For now, think T.D. error as some form of modified reward. This TD error is used to update the Actor model i.e it's policy and also it is used to update Critic model. In this algorithm baseline \(b\) is taken as \(V(s_i)\) where \(V(s_i)\) is the expected total reward from state \(s_i\) upto the state \(s_T\). Let's write \(\nabla_\theta J(\theta)\) expression:  
+From above figure, we can see that the reward is not directly received by the agent i.e Actor but it is fed into Critic model which gives Temporal Difference (TD) error to the Actor. For now, think T.D. error as some form of modified reward. This TD error is used to update the Actor model i.e it's policy and also it is used to update Critic model. In this algorithm baseline \(b\) is taken as \(V(s_i)\) where \(V(s_i)\) is the expected total reward from state \(s_i\) upto the state \(s_T\). Let's write \(\nabla_\theta J(\theta)\) expression:  
 \begin{align*}
 	\nabla_\theta J(\theta) &= \sum_{j=1}^{N}\sum_{i=0}^{T-1}\nabla_\theta\log( \pi_\theta(a_{i,j}|s_{i,j}))(R_{i,j}-b)\\
 	&= \sum_{j=1}^{N}\sum_{i=0}^{T-1}\nabla_\theta\log( \pi_\theta(a_{i,j}|s_{i,j}))(R_{i,j}-V(s_{i,j}))\\
@@ -441,7 +441,7 @@ Using above equation we can not update the policy at each timestep as we need at
 \begin{equation*}
 	\nabla_\theta J(\theta) = \nabla_\theta\log(\pi_\theta(a_{i}|s_{i}))\underbrace{(r_i + \gamma V_\phi(s_{i+1})-V_\phi(s_{i}))}_\text{TD}
 \end{equation*}
-This above equation do not need to know the reward across the whole trajectory. Hence, it can be used to update policy at each timestep. The T.D puts a constraint on the updatation of policy and has effects as follow:
+This above equation does not need to know the reward across the whole trajectory. Hence, it can be used to update policy at each timestep. The T.D puts a constraint on the updation of policy and has effects as follow:
 \begin{align*}
 	r_i + \gamma V_\phi(s_{i+1})>V_\phi(s_{i})&\rightarrow\text{update's \(\theta\) in the direction of estimated }\nabla_\theta \log\pi_\theta(a|s)\\
 	r_i + \gamma V_\phi(s_{i+1})=V_\phi(s_{i})&\rightarrow\text{no update; might have reached optimum solution}\\
@@ -452,7 +452,7 @@ This above equation do not need to know the reward across the whole trajectory. 
   <img src="blogs-images/critic.jpg" style="width:65%"> 
 </div>  
 <br>
-As seen from the above figure when we update Critic model, it is actually the state value function \(V(s)\) which gets updated. Here state value function \(V(s)\) is parameterized by \(\phi\). Its minimization objective function is:
+As seen from the above figure when we update Critic model, it is actually the state value function \(V(s)\) that gets updated. Here state value function \(V(s)\) is parameterized by \(\phi\). Its minimization objective function is:
 \begin{equation*}
 	 J(\phi) = r_i + \gamma V_\phi(s_{i+1})-V_\phi(s_{i})
 \end{equation*}
@@ -460,7 +460,7 @@ As the objective is to minimize the T.D error, we will update parameter of state
 \begin{equation*}
 	\phi = \phi - \alpha \nabla_\phi J(\phi)
 \end{equation*}
-<p style="color:#A9A9A9">Note: I feel it is more appropriate to say just 'temporal difference' when it is feed to Actor model whereas 'temporal difference error' when it is feed into Critic model </p>
+<p style="color:#A9A9A9">Note: I feel it is more appropriate to say just 'temporal difference' when it is feed to Actor model whereas 'temporal difference error' when it is fed into Critic model </p>
 <div class="wrap-collabsible">
   <input id="collapsible4" class="toggle" type="checkbox">
   <label for="collapsible4" class="lbl-toggle">Is \(V(s)\) definition same in every RL methods?</label>
