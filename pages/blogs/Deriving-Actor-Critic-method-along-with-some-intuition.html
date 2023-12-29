@@ -406,7 +406,7 @@ Baseline helps the agent to know whether the action taken was better than averag
 \begin{align*}
 Var[x]&=\mathop{\mathbb{E}}[x^2] + \mathop{\mathbb{E}}[x]^2\\
 	\therefore Var\big[ \nabla_\theta\log( \pi_\theta'(\tau))(R(\tau)-b)\big] &= \mathop{\mathbb{E}}_{\tau \sim \pi'_\theta}\big[ (\nabla_\theta\log( \pi_\theta'(\tau))(R(\tau)-b))^2\big] \\
-	&\hspace{2em}+ \underbrace{\mathop{\mathbb{E}}_{\tau \sim \pi'_\theta}\big[ \nabla_\theta\log( \pi_\theta'(\tau))(R(\tau)-b)\big]^2}_\text{=0}\\
+	&\hspace{2em}+ \underbrace{\mathop{\mathbb{E}}_{\tau \sim \pi'_\theta}\big[ \nabla_\theta\log( \pi_\theta'(\tau))(R(\tau)-b)\big]^2}_\text{this has no effect as baseline adds no bias}\\
 	\text{To find best baseline, solve for }& \frac{dVar}{db}=0\text{ and let }f(\tau)=\nabla_\theta\log( \pi_\theta'(\tau))\\
 	\frac{d}{db}Var\big[ f(\tau)(R(\tau)-b)\big]&= \frac{d}{db}\mathop{\mathbb{E}}_{\tau \sim \pi'_\theta}\big[ (f(\tau)(R(\tau)-b))^2\big]\\
 	&= \frac{d}{db}(\cancelto{0}{\mathop{\mathbb{E}}_{\tau \sim \pi'_\theta}[f(\tau)^2R(\tau)^2]}-2\mathop{\mathbb{E}}_{\tau \sim \pi'_\theta}[f(\tau)^2R(\tau)b]+b^2\mathop{\mathbb{E}}_{\tau \sim \pi'_\theta}[f(\tau)^2])\\
