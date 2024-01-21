@@ -280,17 +280,17 @@ To transform this integral into \(\mathop{\mathbb{E}}\)[] from, we need atleast 
 \end{align*}
 Cheers, we did it !!! We finally were able to write \(\nabla_\theta J(\theta)\) in terms of \(\mathop{\mathbb{E}}\)[], now we can do monte-carlo approximation.
 \begin{equation*}
-	\nabla_\theta J(\theta) \approx \sum_{j=1}^{N} \nabla_\theta \log (\pi'_\theta(\tau_j)) R(\tau_j)
+	\nabla_\theta J(\theta) \approx \frac{1}{N} \sum_{j=1}^{N} \nabla_\theta \log (\pi'_\theta(\tau_j)) R(\tau_j)
 \end{equation*}
 Okay, so we have successfully approximated the integration but we have more work to do. Now we have another problem, \(\pi^{'}_\theta(\tau)\) is not known to us so we can not take gradient of it. Lets replace \(\pi'_\theta(\tau)\) by equation \ref{eq:prob_of_tau}
 \begin{align*}
-	\nabla_\theta J(\theta) =& \sum_{j=1}^{N} \nabla_\theta \log (\pi'_\theta(\tau_j)) R(\tau_j)\\
-				=& \sum_{j=1}^{N} \nabla_\theta \big[\log( p(s_{0,j}) \prod_{i=0}^{T-1} \pi_\theta(a_{i,j}|s_{i,j})p(s_{i+1,j}|s_{i,j},a_{i,j}) )\big]R(\tau_j)\\
-				=& \sum_{j=1}^{N} \nabla_\theta \big[\underbrace{\log( p(s_{0,j}))}_\text{do not depend on \(\theta\)}+\; \log( \prod_{i=0}^{T-1} \pi_\theta(a_{i,j}|s_{i,j}))\;+\;\underbrace{\log(\prod_{i=0}^{T-1} p(s_{i+1,j}|s_{i,j},a_{i,j})}_\text{do not depend on \(\theta\)} )\big]R(\tau_j)\\
-				=& \sum_{j=1}^{N}  \big[\cancelto{0}{\nabla_\theta \log(p(s_{0,j}))}+\; \nabla_\theta\log( \prod_{i=0}^{T-1} \pi_\theta(a_{i,j}|s_{i,j}))\;+\;\cancelto{0}{\nabla_\theta\log(\prod_{i=0}^{T-1} p(s_{i+1,j}|s_{i,j},a_{i,j}) )}\big]R(\tau_j)\\
-	=& \sum_{j=1}^{N} \big[\nabla_\theta \log(\prod_{i=0}^{T-1} \pi_\theta(a_{i,j}|s_{i,j}))\big]R(\tau_j)\\
-	=& \sum_{j=1}^{N} \big[\nabla_\theta \sum_{i=0}^{T-1}\log( \pi_\theta(a_{i,j}|s_{i,j}))\big]R(\tau_j)\\
-	=& \sum_{j=1}^{N} \sum_{i=0}^{T-1}\nabla_\theta\log( \pi_\theta(a_{i,j}|s_{i,j}))R(\tau_j)\\
+	\nabla_\theta J(\theta) =& \frac{1}{N} \sum_{j=1}^{N} \nabla_\theta \log (\pi'_\theta(\tau_j)) R(\tau_j)\\
+				=& \frac{1}{N} \sum_{j=1}^{N} \nabla_\theta \big[\log( p(s_{0,j}) \prod_{i=0}^{T-1} \pi_\theta(a_{i,j}|s_{i,j})p(s_{i+1,j}|s_{i,j},a_{i,j}) )\big]R(\tau_j)\\
+				=& \frac{1}{N} \sum_{j=1}^{N} \nabla_\theta \big[\underbrace{\log( p(s_{0,j}))}_\text{do not depend on \(\theta\)}+\; \log( \prod_{i=0}^{T-1} \pi_\theta(a_{i,j}|s_{i,j}))\;+\;\underbrace{\log(\prod_{i=0}^{T-1} p(s_{i+1,j}|s_{i,j},a_{i,j})}_\text{do not depend on \(\theta\)} )\big]R(\tau_j)\\
+				=& \frac{1}{N} \sum_{j=1}^{N}  \big[\cancelto{0}{\nabla_\theta \log(p(s_{0,j}))}+\; \nabla_\theta\log( \prod_{i=0}^{T-1} \pi_\theta(a_{i,j}|s_{i,j}))\;+\;\cancelto{0}{\nabla_\theta\log(\prod_{i=0}^{T-1} p(s_{i+1,j}|s_{i,j},a_{i,j}) )}\big]R(\tau_j)\\
+	=& \frac{1}{N} \sum_{j=1}^{N} \big[\nabla_\theta \log(\prod_{i=0}^{T-1} \pi_\theta(a_{i,j}|s_{i,j}))\big]R(\tau_j)\\
+	=& \frac{1}{N} \sum_{j=1}^{N} \big[\nabla_\theta \sum_{i=0}^{T-1}\log( \pi_\theta(a_{i,j}|s_{i,j}))\big]R(\tau_j)\\
+	=& \frac{1}{N} \sum_{j=1}^{N} \sum_{i=0}^{T-1}\nabla_\theta\log( \pi_\theta(a_{i,j}|s_{i,j}))R(\tau_j)\\
 \end{align*}
 Now the above equation can be used for updating policy parameter.
 <!--{write about how now we know \(R(\tau)\) but was unknown earlier}-->
