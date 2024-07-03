@@ -1,0 +1,341 @@
+ <html>
+ <head>
+ 	<title>why the notation of discrete state-space model is not consistent across literature?</title>
+   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+    <script>
+	window.MathJax = {
+  tex: {
+    tags: 'ams'
+  }
+};
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+ <style>
+.wrap-collabsible {
+  margin-bottom: 1.2rem 0;
+}
+
+input[type='checkbox'] {
+  display: none;
+}
+
+.lbl-toggle {
+  display: block;
+
+  font-weight: none;
+  font-family: monospace;
+  font-size: none;
+  text-transform: none;
+  text-align: none;
+
+  padding: 1rem;
+
+  color: #A77B0E;
+  background: none;
+
+  cursor: pointer;
+
+  border-radius: 7px;
+  transition: all 0.25s ease-out;
+}
+
+.lbl-toggle:hover {
+  color: #7C5A0B;
+}
+
+.lbl-toggle::before {
+  content: ' ';
+  display: inline-block;
+
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid currentColor;
+  vertical-align: middle;
+  margin-right: .7rem;
+  transform: translateY(-2px);
+
+  transition: transform .2s ease-out;
+}
+
+.toggle:checked + .lbl-toggle::before {
+  transform: rotate(90deg) translateX(-3px);
+}
+
+.collapsible-content {
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height .25s ease-in-out;
+}
+
+.toggle:checked + .lbl-toggle + .collapsible-content {
+  max-height: 100vh;
+}
+
+.toggle:checked + .lbl-toggle {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.collapsible-content .content-inner {
+  background: rgba(250, 224, 66, .2);
+  border-bottom: 1px solid rgba(250, 224, 66, .45);
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  padding: .5rem 1rem;
+}
+
+
+.content {
+  max-width: 750px;
+  margin: auto;
+  line-height: 1.8;
+}
+.pages {
+ margin-left: auto;
+}
+/* When it is unvisited link */  
+a:link {
+color: #7393B3;
+}
+
+/* When it is visited link */
+a:visited {
+color: #7393B3;
+}
+
+/* When you mouse over link */
+a:hover {
+color: red;
+}
+
+/* When it is selected link */
+a:active {
+color: blue;
+}
+h2 {
+
+margin-bottom: 5px;
+
+}
+div.box {
+  border: none;
+  outline: 2px solid black;
+  margin: 35px;
+}
+</style>
+</head>
+
+
+
+<body text="#36454F">
+<div align="middle" class="pages">
+<p>Rohan Thorat</p>   
+<a style="text-decoration:none;" href="https://rohan-v-thorat.github.io/" > About </a> |
+<a style="text-decoration:none;" href="/pages/blogs.html" > Blog </a> |
+<a style="text-decoration:none;" href="https://github.com/rohan-v-thorat" target="_blank"> GitHub </a> 
+ <a style="text-decoration:none;" href="/pages/publications.html" > Publications </a> |
+<a style="text-decoration:none;" href="/pages/teaching.html" > Teaching </a> |
+<a style="text-decoration:none;" href="/pages/extra-activities.html" > Extra-activities </a>
+</div>
+<hr>
+<div class="content">
+ 
+<h1 style="color:#595959;line-height: 1.5"><b>why the notation of discrete state-space model is not consistent across literature? </b></h1>
+
+<p style="color:#818589;font-family: cursive">Posted on 3<sup>rd</sup> July, 2024</p>
+Pre-requisite: Not required<br>
+
+
+<h4 style="color:#666666;margin-bottom: -20px">Content:</h4>
+ <ul>
+  <li><a href="#Intro">Introduction</a></li>
+  <li><a href="#Bkg">Background</a></li>
+  <li><a href="#Expl">Explaination</a></li> 
+  <ul>
+  	<li><a href="#case1"><u>Case</u>: 1) when '\(u\)' is external disturbance input</a></li>
+  	<li><a href="#case2"><u>Case</u>: 2) when '\(u\)' is external control input</a></li>
+  </ul> 
+</ul> 
+
+
+<!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Introduction%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
+
+<h2 id="Intro" style="color:#666666">Introduction</h2>
+
+Discrete state-space model(process equation) is mathematically defined as \(x_{k+1}=f(x_k,u_k)\) where '\(k\)' is timestep, '\(x\)' is state of the dynamical system and '\(u\)' is an external input to the dynamical system. In literature there are two versions of process equation: \(x_{k+1}=f(x_k,u_k)\) and \(x_{k+1}=f(x_k,u_{k+1})\) when '\(u\)' is external input. One might get confused and might think which one of them is correct. Lets find out the truth . . .
+
+<h2 id="Bkg" style="color:#666666">Background</h2>
+A closed form solution of discrete state space can be derived if its continuous state-space model is linear w.r.t to '\(x\)'. Let's consider an linear continuous state-space model as shown below:
+\begin{equation*}
+\dot{x} = Ax+Bu
+\end{equation*}
+Now derivation of discrete state-space model can be done as followed: (for ease of derivation let '\(x\)' be scalar)
+\begin{align*}
+\dot{x} & = Ax + Bu \\
+\dfrac{dx}{dt} & = Ax + Bu\\
+dx & = (Ax + Bu)dt \\
+\dfrac{dx}{(Ax + Bu)} & = dt
+\end{align*}
+Integrating both sides
+\begin{align*}
+\int_{x_k}^{x_{k+1}} \dfrac{1}{(Ax + Bu)}dx & = \int_{t_k}^{t_{k+1}} dt \\
+\dfrac{\ln (Ax_{k+1} +Bu_k) - \ln (Ax_k + Bu_k)}{A}  &= t_{k+1} - t_k \\
+\ln\big(\dfrac{Ax_{k+1} +Bu_k}{Ax_k + Bu_k}\big) &= A \Delta t \\
+\dfrac{Ax_{k+1} +Bu_k}{Ax_k + Bu_k} & = \exp (A \Delta t) \\ 
+Ax_{k+1} +Bu_k & = \exp (A \Delta t)(Ax_k + Bu_k) \\
+Ax_{k+1} &= A_dAx_k + (A_d-I)Bu_k \\
+x_{k+1} &= A^{-1}A_dAx_k+A^{-1}(A_d-I)Bu_k \\
+x_{k+1} &= A_dx_k+B_du_k \\
+x_{k+1} &= f(x_k,u_k)
+\end{align*}
+Here, \(A_d = \exp(A \Delta t)\) and \(B_d=A^{-1}(A_d-I)B\)
+<div class="wrap-collabsible">
+  <input id="collapsible1" class="toggle" type="checkbox">
+  <label for="collapsible1" class="lbl-toggle">why continuous state-space model is called as continuous ?</label>
+  <div class="collapsible-content">
+    <div class="content-inner">
+      <p>
+       Continuous state-space model do not have the restriction as of discrete state-space model. A discrete state-space model can be used only to estimate state at specific timestep \(t_{k+1}\) based on state at \(t_k\) so it is called discrete. But it can not tell about the state of the system in between time-interval \(t_k\) and \(t_{k+1}\). 
+       <br>
+       But a Continuous state-space model \(\dot{x}_k=f(x_k,u_k)\) could tell about state at any time. Let the time be \(t_*\) which is close to \(t_k\), then the state at \(t_*\) will be:
+       \begin{align*}
+       x_{t_*} &= x_k + \dot{x}_k(t_* - t_k) \\
+       		&= x_k + f(x_k,u_k)(t_* - t_k)
+       \end{align*} 
+      </p>
+    </div>
+  </div>
+</div> 
+
+<h2 id="Expl" style="color:#666666">Explaination</h2>
+<h3 id="case1" style="color:#666666"><u>Case</u>: 1) when '\(u\)' is external disturbance input</h3>
+
+<div align ="middle" class="content">
+  <img src="blogs-images/notations/discrete_time_u.png" style="width:65%"> 
+</div>
+<br>
+
+As shown is the above figure, discrete information of external input '\(u\)' to the dynamical system is available because sensors take measurement at discrete time. But in reality '\(u\)' is continuous input, so based on those discrete input throughtout each time-interval some value of input need to be assumed. This is done using one of the two approach as shown in the sub-figures below.  
+<br>
+
+<div align ="middle" class="content">
+  <img src="blogs-images/notations/discrete_time_u_versions.png" style="width:95%"> 
+</div>
+<br>
+In <a href="#Bkg">background section</a>, external input was assumed as per figure (A) in the domain [\(t_k,t_{k+1}\)) and the derivation was carried out. One could also assume external input as per figure (B) in the time domain (\(t_k,t_{k+1}\)] then we would end up with \(x_{k+1}=f(x_k,u_{k+1})\). So in the case of external disturbance input both the versions of discrete state-space model are correct. 
+
+\begin{equation*}
+x_{k+1} = f(x_k,u_k) \text{ or } f(x_k,u_{k+1})
+\end{equation*}
+
+<div class="wrap-collabsible">
+  <input id="collapsible2" class="toggle" type="checkbox">
+  <label for="collapsible2" class="lbl-toggle">Can the discrete state-space model be better than the present one's ?</label>
+  <div class="collapsible-content">
+    <div class="content-inner">
+      <p>
+	1) A simplest performance wise better alternative for a discrete state-space model when '\(u\)' is external disturbance input would be to consider average of '\(u\)' at timestep \(t_k\) and \(t_{k+1}\):
+	\begin{equation*}
+	x_{k+1}=f(x_k,\dfrac{u_k+u_{k+1}}{2})
+	\end{equation*}
+  <div align ="middle" class="content">
+    <img src="blogs-images/notations/average_u.png" style="width:45%"> 
+  </div>
+	2) A second alternative approach is to consider linearly varying '\(u\)' between the time-interval [\(t_k,t_{k+1}\)]. Doing so for the case of linear continuous state-space model we would end up with:
+	\begin{equation*}
+	x_{k+1} = A_dx_k+(A^*)^{n-1}Bu_{1,k}+(A^*)^{n-2}Bu_{2,k}+\cdots+Bu_{n,k}
+	\end{equation*} 
+	Here, \(A^* = \exp(A \Delta t/n),u_{i,k}=u_k+(i-1)(u_{k+1}-u_k)/n\) where \(n\) is finitely large number.
+  <div align ="middle" class="content">
+    <img src="blogs-images/notations/linear_u.png" style="width:45%"> 
+  </div>
+      </p>
+    </div>
+  </div>
+</div> 
+
+<h3 id="case2" style="color:#666666"><u>Case</u>: 2) when '\(u\)' is external control input</h3>
+In this case, as '\(u\)' is external control input it is known to us throughout the time-interval <br>[\(t_k,t_{k+1}\)] and so there is no assumption needed as in earlier case. A control input value is decided based on the current state of dynamical system and can be mathematically defined as \(u_{k^+}=f(x_k)\) (Note: \(k^+\) means right hand limit).
+<br> 
+As decision of control input and measurement of state of dynamical system '\(x\)' is not a simultaneous task, first \(x\) is measured and then control decision is taken. This \(u_{k^+}\) is constantly given to the system until measurement of state of dynamical system is obtained at next timestep \(t_{k+1}\). Hence the control input would follow only the pattern as per figure (B) and we would have discrete state-space model as below:
+
+\begin{equation*}
+x_{k+1} = f(x_k,u_{k+1})
+\end{equation*}
+
+
+<br>
+<br>
+<br>
+<!-----
+########################### rough work #####################
+<br>
+You came across this blog, means you must have also suffered from the confusion of why do the measurement equation in control differ from system identification.  
+<br>
+The external disturbance and external control input makes the difference in the equation and this is only the culprit for the confusion. '\(u\)' in system identification problem is external disturbance force whereas '\(u\)' in control problem is external control force.
+
+<br>
+<b> For non-control problem </b>
+\begin{align*}
+
+\text{Process equation}:& \ x_{t+1} = Ax_t + Bu_t\\
+\text{Measurement equation}:& \ y_{t} = Cx_{t} + Du_{t}
+\end{align*}
+<br>
+<b> For control problem </b>
+\begin{align*}
+
+\text{Process equation}:& \ x_{t+1} = Ax_t + Bu_t\\
+\text{Measurement equation}:& \ y_{t} = Cx_{t} + Du_{t-1}
+
+\end{align*}
+
+[Add image here of 'u' plots]
+
+<br>
+<h3>Could the equation differ other than above example?</h3>
+Yes, it could differ from the above equation. The \(u\) in the process equation might be taken at \(t-1\) timestep instead of \(t\). Is there any mystery behind doing so. The answer is NO. 
+<br>
+It is completly fine to keep any timestep, any ways we do not know the 'u' value from 't-1' to 't' timestep. It might be better to keep average of 'u' at 't-1' and 't', mathmatically we would come close to true solution
+
+
+---->
+
+
+<!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Disqus comment%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
+<!--
+<div id="disqus_thread"></div>
+<script>
+
+    var disqus_config = function () {
+    this.page.url = "https://rohan-v-thorat.github.io/pages/blogs/Deriving-Actor-Critic-method-along-with-some-intuition.html";  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = 3; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://https-rohan-v-thorat-github-io.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>  
+</div>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<script id="dsq-count-scr" src="//https-rohan-v-thorat-github-io.disqus.com/count.js" async></script>
+-->
+<!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Rough work%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
+
+
+</div>
+<!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%--> 
+
+
+</body> 
+
+</html>
