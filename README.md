@@ -1,3 +1,3 @@
 # rohan-v-thorat.github.io
 
-Personal Website
+This repository contains the code used to develop my personal website "rohan-v-thorat.github.io"
