@@ -50,6 +50,86 @@ body {
   background-size: cover;
   background-color: black;
 }
+
+/* Floating circular container */
+.circular-wrapper {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 160px;
+  height: 160px;
+  z-index: 1000;
+}
+
+/* Dodge button with background glow */
+.circular-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  cursor: pointer;
+
+  /* Button surface */
+  background:
+    radial-gradient(circle at 30% 30%, #ff5a5a, #7a0000 70%),
+    linear-gradient(145deg, #400000, #120000);
+
+  /* Button depth */
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.25),
+    inset 0 -4px 6px rgba(0,0,0,0.6),
+    0 6px 18px rgba(255,0,0,0.45);
+
+  transition: transform 0.12s ease-out;
+  z-index: 2;
+}
+
+/* Background glow halo */
+.circular-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 0, 0, 0.199) 0%,
+    rgba(255, 0, 0, 0.315) 40%,
+    rgba(255, 0, 0, 0.199) 60%,
+    rgba(214, 211, 211, 0.863) 70%
+  );
+  filter: blur(8px);
+  z-index: 1;
+  animation: glowPulse 1s ease-in-out infinite;
+}
+
+/* Subtle breathing animation */
+@keyframes glowPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.9;
+  }
+}
+
+
+/* SVG text styling */
+.circular-text {
+  fill: #ff6666;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 0 0 6px rgba(255,0,0,0.4);
+}
+
 </style>
 </head>
 
@@ -88,7 +168,63 @@ body {
  
 <div align="middle" id="footer" style="color:white">Excited and eager to experience human body-mind limits and push it little further
 </div>
-</body> 
+
+<div class="circular-wrapper">
+
+  <!-- Circular text SVG (unchanged) -->
+  <svg width="160" height="160" viewBox="0 0 160 160">
+    <defs>
+      <path
+        id="circlePath"
+        d="M 80,80
+           m -60,0
+           a 60,60 0 1,1 120,0
+           a 60,60 0 1,1 -120,0" />
+    </defs>
+    <text class="circular-text">
+      <textPath href="#circlePath">
+        DO NOT CLICK HERE • DO NOT TRY TO CLICK HERE •
+      </textPath>
+    </text>
+  </svg>
+
+  <!-- Glow + Button -->
+  <div class="circular-glow"></div>
+  <div class="circular-btn"></div>
+
+</div>
+
+
+<script>
+const btn = document.querySelector('.circular-btn');
+const wrapper = document.querySelector('.circular-wrapper');
+
+document.addEventListener('mousemove', (e) => {
+  const btnRect = btn.getBoundingClientRect();
+  const wrapperRect = wrapper.getBoundingClientRect();
+
+  const btnX = btnRect.left + btnRect.width / 2;
+  const btnY = btnRect.top + btnRect.height / 2;
+
+  const dx = e.clientX - btnX;
+  const dy = e.clientY - btnY;
+  const distance = Math.sqrt(dx * dx + dy * dy);
+
+  const dodgeRadius = 120; // how close cursor must be
+
+  if (distance < dodgeRadius) {
+    const angle = Math.atan2(dy, dx);
+    const moveX = -Math.cos(angle) * 40;
+    const moveY = -Math.sin(angle) * 40;
+
+    btn.style.transform = `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px))`;
+  } else {
+    btn.style.transform = 'translate(-50%, -50%)';
+  }
+});
+</script>
+
+</body>
 
 </html>
 
