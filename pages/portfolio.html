@@ -191,13 +191,13 @@ hr { border: none; border-top: 1px solid #ddd; margin: 0; }
     </div>
     <div class="card-body">
       <div class="card-number">001</div>
-      <h2>Model-Form Error Identification in Simply Supported Beam</h2>
-      <p>Machine learning assisted identification of model-form errors in linear dynamical systems via modal reduction. Predicts true states when the structural model is intentionally misspecified.</p>
+      <h2>ML-Assisted State Prediction under Model-Form Error</h2>
+      <p>Structural models always carry modelling assumptions — wrong beam theory, misspecified damping, incorrect boundary conditions. This framework uses a Gaussian Process Latent Force Model (GPLFM) in the reduced modal domain to learn and correct these discrepancies on-the-fly. A mesh-invariant neural network maps modal states to error estimates, validated across five realistic error scenarios including unmodelled nonlinearity and local damage.</p>
       <div class="tags">
-        <span class="tag">Model-Form Error</span>
-        <span class="tag">Beam Dynamics</span>
+        <span class="tag">GPLFM</span>
         <span class="tag">Modal Reduction</span>
-        <span class="tag">State Estimation</span>
+        <span class="tag">Bayesian Filtering</span>
+        <span class="tag">Digital Twins</span>
       </div>
       <a class="card-link" href="https://arxiv.org/abs/2601.05297" target="_blank">Read Paper <i class="fas fa-arrow-right"></i></a>
     </div>
@@ -281,11 +281,11 @@ hr { border: none; border-top: 1px solid #ddd; margin: 0; }
     </div>
     <div class="card-body">
       <div class="card-number">002</div>
-      <h2>Safe RL-Based Vibration Control with LQR Guidance</h2>
-      <p>A safe reinforcement learning framework for structural vibration control. LQR acts as a safety guide to prevent unstable exploration, enabling reliable convergence on physical structures.</p>
+      <h2>Safe RL for Structural Vibration Control via LQR Guidance</h2>
+      <p>Training RL directly on a physical structure is risky — random exploration can cause damage. This work proposes a hybrid LQR+RL framework where an LQR controller (derived from arbitrarily chosen, potentially wrong parameters) linearly mixes with the RL policy during training to keep exploration safe. After training, the RL policy takes over and surpasses LQR in vibration suppression with lower control effort — all without ever identifying the true system model.</p>
       <div class="tags">
         <span class="tag">Safe RL</span>
-        <span class="tag">LQR</span>
+        <span class="tag">LQR Guidance</span>
         <span class="tag">Vibration Control</span>
         <span class="tag">ICCMS 2025</span>
       </div>
@@ -346,13 +346,13 @@ hr { border: none; border-top: 1px solid #ddd; margin: 0; }
     </div>
     <div class="card-body">
       <div class="card-number">003</div>
-      <h2>System Identification of Hyperelastic Materials via Variational Bayes</h2>
-      <p>Sparsity-promoting variational Bayesian framework that recovers nonlinear constitutive laws of hyperelastic materials from stress-strain data with full uncertainty quantification.</p>
+      <h2>System ID &amp; Reliability of Hyperelastic Materials via Variational Bayes</h2>
+      <p>Hyperelastic materials like rubber exhibit highly nonlinear stress-strain behaviour that is hard to model from first principles. This work uses a sparsity-promoting variational Bayesian framework to automatically select the right constitutive terms from a large candidate library — recovering the governing law with full uncertainty quantification on each coefficient, enabling downstream reliability assessment.</p>
       <div class="tags">
         <span class="tag">Variational Bayes</span>
-        <span class="tag">Hyperelasticity</span>
         <span class="tag">Sparse Regression</span>
-        <span class="tag">UQ</span>
+        <span class="tag">Constitutive Law</span>
+        <span class="tag">Reliability</span>
       </div>
       <a class="card-link" href="https://www.sciencedirect.com/science/article/pii/S0266892025000359" target="_blank">Read Paper <i class="fas fa-arrow-right"></i></a>
     </div>
@@ -417,12 +417,12 @@ hr { border: none; border-top: 1px solid #ddd; margin: 0; }
     <div class="card-body">
       <div class="card-number">004</div>
       <h2>Deriving Actor-Critic Methods with Intuition</h2>
-      <p>A rigorous derivation of actor-critic reinforcement learning — from policy gradient theorem to advantage estimation. Built to give deep intuition alongside the maths for structural control applications.</p>
+      <p>Starting from the REINFORCE policy gradient, this blog rigorously derives the full Actor-Critic algorithm step by step — reward-to-go, baseline subtraction (with no-bias and variance-reduction proofs), and the advantage function A(s,a). Each step is motivated by the problem it solves, so the reader builds genuine intuition rather than just following equations.</p>
       <div class="tags">
-        <span class="tag">Actor-Critic</span>
+        <span class="tag">REINFORCE</span>
         <span class="tag">Policy Gradient</span>
-        <span class="tag">RL Theory</span>
-        <span class="tag">Deep RL</span>
+        <span class="tag">Advantage Function</span>
+        <span class="tag">Variance Reduction</span>
       </div>
       <a class="card-link" href="/pages/blogs/Deriving-Actor-Critic-method-along-with-some-intuition.html">Read Blog <i class="fas fa-arrow-right"></i></a>
     </div>
