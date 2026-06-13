@@ -38,42 +38,18 @@ body {
 a { color: inherit; text-decoration: none; }
 a:hover { color: var(--accent); }
 
-/* ── Nav ─────────────────────────────────────────────────── */
-.nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 40px;
-  background: rgba(255,255,255,0.9);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-}
-
-.nav-name {
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  color: var(--text);
-}
-
-.nav-links {
-  display: flex;
-  gap: 28px;
-  align-items: center;
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  color: var(--muted);
-}
-
-.nav-links a { transition: color 0.2s; }
-.nav-links a:hover, .nav-links a.active { color: var(--text); }
+/* ── Nav (matches other pages) ───────────────────────────── */
+.pages { margin-left: auto; padding-top: 8px; }
+.pages p { margin: 0 0 4px; }
+.pages a:link    { color: #7393B3; }
+.pages a:visited { color: #7393B3; }
+.pages a:hover   { color: red; }
+.pages a:active  { color: blue; }
+.pages + hr { margin: 0 0 0; border: none; border-top: 1px solid #ccc; }
 
 /* ── Hero ────────────────────────────────────────────────── */
 .hero {
-  padding: 160px 40px 80px;
+  padding: 70px 40px 80px;
   max-width: 1100px;
   margin: 0 auto;
 }
@@ -380,6 +356,28 @@ a:hover { color: var(--accent); }
   transform: scale(1.04);
 }
 
+/* Interactive toggle overlaid on a visual */
+.viz-toggle {
+  position: absolute;
+  top: 14px; right: 14px;
+  z-index: 3;
+  font-family: var(--font);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.25s var(--ease-out);
+}
+.viz-toggle.on  { border-color: #27ae60; color: #27ae60; background: rgba(39,174,96,0.08); }
+.viz-toggle.off { border-color: var(--accent); color: var(--accent); background: rgba(192,57,43,0.08); }
+.viz-toggle:hover { transform: translateY(-1px); }
+
 /* ── Footer ──────────────────────────────────────────────── */
 #footer {
   position: fixed;
@@ -414,20 +412,19 @@ a:hover { color: var(--accent); }
 </head>
 <body>
 
-<!-- Nav -->
-<nav class="nav">
-  <div class="nav-name">Rohan Thorat</div>
-  <div class="nav-links">
-    <a href="https://rohan-v-thorat.github.io/">About</a>
-    <a href="/pages/portfolio.html" class="active">Portfolio</a>
-    <a href="/pages/blogs.html">Blogs</a>
-    <a href="/pages/videos.html">Videos</a>
-    <a href="https://github.com/rohan-v-thorat" target="_blank">GitHub</a>
-    <a href="/pages/publications.html">Publications</a>
-    <a href="/pages/teaching.html">Teaching</a>
-    <a href="/pages/extra-activities.html">Extra-activities</a>
-  </div>
-</nav>
+<!-- Nav (matches the other pages) -->
+<div align="middle" class="pages">
+<p>Rohan Thorat</p>
+<a style="text-decoration:none;" href="https://rohan-v-thorat.github.io/" > About </a> |
+<a style="text-decoration:none;" href="/pages/portfolio.html" > Portfolio </a> |
+<a style="text-decoration:none;" href="/pages/blogs.html" > Blogs </a> |
+<a style="text-decoration:none;" href="/pages/videos.html" > Videos <span><i class="fab fa-youtube"></i></span></a> |
+<a style="text-decoration:none;" href="https://github.com/rohan-v-thorat" target="_blank"> GitHub <span><i class="fab fa-github"></i></span></a> |
+<a style="text-decoration:none;" href="/pages/publications.html" > Publications <span><i class="fab fa-google-scholar"></i></span></a> |
+<a style="text-decoration:none;" href="/pages/teaching.html" > Teaching </a> |
+<a style="text-decoration:none;" href="/pages/extra-activities.html" > Extra-activities </a>
+</div>
+<hr>
 
 <!-- Hero -->
 <section class="hero">
@@ -487,15 +484,15 @@ a:hover { color: var(--accent); }
 <!-- Stats -->
 <div class="stats-row">
   <div class="stat-block">
-    <div class="stat-n">4+</div>
+    <div class="stat-n" data-count="4" data-suffix="+">0</div>
     <div class="stat-l">Years Research</div>
   </div>
   <div class="stat-block">
-    <div class="stat-n">1</div>
+    <div class="stat-n" data-count="1">0</div>
     <div class="stat-l">Journal Paper</div>
   </div>
   <div class="stat-block">
-    <div class="stat-n">2</div>
+    <div class="stat-n" data-count="2">0</div>
     <div class="stat-l">Conference Papers</div>
   </div>
   <div class="stat-block">
@@ -586,6 +583,7 @@ a:hover { color: var(--accent); }
       </div>
     </div>
     <div class="proj-visual">
+      <button class="viz-toggle on" id="rl-toggle" onclick="toggleControl(this)">Control: ON</button>
       <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
         <line x1="95" y1="170" x2="225" y2="170" stroke="#bbb" stroke-width="2"/>
         <line x1="95" y1="172" x2="105" y2="182" stroke="#ccc" stroke-width="1"/><line x1="108" y1="172" x2="118" y2="182" stroke="#ccc" stroke-width="1"/>
@@ -767,22 +765,64 @@ document.querySelectorAll('.project-row').forEach(el => observer.observe(el));
   const cl = document.getElementById('ctrl-label');
   if (!f1 || !f4) return;
   const phi = [0.19, 0.45, 0.74, 1.0];
-  const amp = 12;
+  const ampMin = 5, ampMax = 26;
+  let amp = ampMin;          // current sway amplitude
   let t = 0;
   function tick() {
     t += 0.022;
+    // Control ON -> damp toward small amplitude; OFF -> grow toward large amplitude
+    const target = window.__rlControl ? ampMin : ampMax;
+    amp += (target - amp) * 0.03;
     const d = Math.sin(t);
     [f1,f2,f3,f4].forEach((el,i) => el.setAttribute('transform', `translate(${d*amp*phi[i]},0)`));
     const topDx = d * amp * phi[3];
     colL.setAttribute('d', `M ${120+topDx} 78 L 110 170`);
     colR.setAttribute('d', `M ${198+topDx} 78 L 210 170`);
-    const bx = 200 + topDx, force = -d * 18;
+    // Control force only acts when control is ON
+    const force = window.__rlControl ? -d * 18 : 0;
+    const bx = 200 + topDx;
     ca.setAttribute('x1', bx); ca.setAttribute('y1', 87);
     ca.setAttribute('x2', bx + force); ca.setAttribute('y2', 87);
+    ca.setAttribute('opacity', window.__rlControl ? 1 : 0.15);
+    cl.setAttribute('opacity', window.__rlControl ? 1 : 0.15);
     cl.setAttribute('x', bx + force + (force > 0 ? 3 : -22));
     requestAnimationFrame(tick);
   }
   tick();
+})();
+
+/* control state + toggle */
+window.__rlControl = true;
+function toggleControl(btn) {
+  window.__rlControl = !window.__rlControl;
+  if (window.__rlControl) {
+    btn.textContent = 'Control: ON';
+    btn.classList.add('on'); btn.classList.remove('off');
+  } else {
+    btn.textContent = 'Control: OFF';
+    btn.classList.add('off'); btn.classList.remove('on');
+  }
+}
+
+/* ── Count-up stats ──────────────────────────────────── */
+(function() {
+  const stats = document.querySelectorAll('.stat-n[data-count]');
+  if (!stats.length) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target, target = +el.dataset.count, suffix = el.dataset.suffix || '';
+      let n = 0;
+      const step = Math.max(1, Math.ceil(target / 28));
+      (function up() {
+        n = Math.min(target, n + step);
+        el.textContent = n + suffix;
+        if (n < target) requestAnimationFrame(up);
+      })();
+      io.unobserve(el);
+    });
+  }, { threshold: 0.6 });
+  stats.forEach(s => io.observe(s));
 })();
 
 /* ── Stress-strain draw ──────────────────────────────── */
