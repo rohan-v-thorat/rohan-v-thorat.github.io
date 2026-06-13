@@ -42,6 +42,7 @@ hr { border:none; border-top:1px solid #ccc; }
   animation: spin 30s linear infinite;
 }
 .stage:hover .ring { animation-play-state: paused; }
+.ring.paused { animation-play-state: paused; }
 
 @keyframes spin {
   from { transform: rotateY(0deg); }
@@ -183,6 +184,16 @@ hr { border:none; border-top:1px solid #ccc; }
 <p class="hint">Hover the ring to pause · click a card to open</p>
 
 <script>
+/* mobile: tap-and-hold to pause */
+(function(){
+  const ring = document.querySelector('.ring');
+  const stage = document.querySelector('.stage');
+  const pause  = () => ring.classList.add('paused');
+  const resume = () => ring.classList.remove('paused');
+  stage.addEventListener('touchstart', pause,  { passive: true });
+  stage.addEventListener('touchend',   resume, { passive: true });
+  stage.addEventListener('touchcancel',resume, { passive: true });
+})();
 /* beam wobble */
 (function(){
   const bt=document.getElementById('p-beam-true'), bm=document.getElementById('p-beam-model');
