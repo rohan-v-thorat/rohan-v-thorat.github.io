@@ -159,14 +159,14 @@ hr { border: none; border-top: 1px solid #222; margin: 0; }
         <polygon points="290,90 280,112 300,112" fill="none" stroke="#444" stroke-width="1.5"/>
         <circle cx="290" cy="116" r="3" fill="none" stroke="#444" stroke-width="1.5"/>
 
-        <!-- True deformed beam shape (sinusoidal, half-wave) — red -->
-        <path d="M 30 90 Q 100 38 160 90 Q 220 142 290 90" fill="none" stroke="#e05252" stroke-width="2.5" opacity="0.9"/>
+        <!-- True deformed beam shape (sinusoidal, half-wave) — red, ANIMATED -->
+        <path id="beam-true" d="M 30 90 Q 100 38 160 90 Q 220 142 290 90" fill="none" stroke="#e05252" stroke-width="2.5" opacity="0.9"/>
 
-        <!-- Model prediction (slightly off) — blue dashed -->
-        <path d="M 30 90 Q 110 44 160 90 Q 215 136 290 90" fill="none" stroke="#7393B3" stroke-width="2" stroke-dasharray="6,4" opacity="0.85"/>
+        <!-- Model prediction (slightly off) — blue dashed, ANIMATED -->
+        <path id="beam-model" d="M 30 90 Q 110 44 160 90 Q 215 136 290 90" fill="none" stroke="#7393B3" stroke-width="2" stroke-dasharray="6,4" opacity="0.85"/>
 
-        <!-- Error shading between the two curves -->
-        <path d="M 30 90 Q 100 38 160 90 Q 220 142 290 90 Q 215 136 160 90 Q 110 44 30 90" fill="rgba(224,82,82,0.07)"/>
+        <!-- Error shading between the two curves, ANIMATED -->
+        <path id="beam-error" d="M 30 90 Q 100 38 160 90 Q 220 142 290 90 Q 215 136 160 90 Q 110 44 30 90" fill="rgba(224,82,82,0.07)"/>
 
         <!-- Error arrows at midpoints -->
         <line x1="100" y1="62" x2="110" y2="66" stroke="#e05252" stroke-width="1" marker-end="url(#arrowRed)"/>
@@ -237,7 +237,7 @@ hr { border: none; border-top: 1px solid #222; margin: 0; }
         </g>
 
         <!-- Vibration arrows on building (animated) -->
-        <g class="float-up">
+        <g id="building-sway">
           <line x1="215" y1="100" x2="238" y2="100" stroke="#e05252" stroke-width="1.5" marker-end="url(#arrowR)"/>
           <line x1="215" y1="124" x2="232" y2="124" stroke="#e05252" stroke-width="1.5" marker-end="url(#arrowR)"/>
           <line x1="215" y1="148" x2="226" y2="148" stroke="#e05252" stroke-width="1.5" marker-end="url(#arrowR)"/>
@@ -441,9 +441,9 @@ hr { border: none; border-top: 1px solid #222; margin: 0; }
         <line x1="35" y1="72" x2="290" y2="72" stroke="#e05252" stroke-width="2" opacity="0.8"/>
         <text x="292" y="75" font-size="7" fill="#e05252" font-family="monospace">θ*</text>
 
-        <!-- Estimated parameter — starts far, converges -->
-        <path d="M 35 140 C 55 130, 70 100, 90 88 C 110 80, 130 75, 160 73 C 190 72, 230 72, 290 72"
-              fill="none" stroke="#7393B3" stroke-width="2.2" stroke-dasharray="220" stroke-dashoffset="0"/>
+        <!-- Estimated parameter — starts far, converges (animated draw) -->
+        <path id="param-line" d="M 35 140 C 55 130, 70 100, 90 88 C 110 80, 130 75, 160 73 C 190 72, 230 72, 290 72"
+              fill="none" stroke="#7393B3" stroke-width="2.2" stroke-dasharray="300" stroke-dashoffset="300"/>
 
         <!-- Shaded error region -->
         <path d="M 35 140 C 55 130, 70 100, 90 88 C 110 80, 130 75, 160 73 C 190 72, 230 72, 290 72 L 290 72 L 35 72 Z" fill="rgba(115,147,179,0.06)"/>
@@ -557,6 +557,88 @@ hr { border: none; border-top: 1px solid #222; margin: 0; }
 <div id="footer">Excited and eager to experience human body-mind limits and push it little further</div>
 
 <script>
+/* ── Animation engine ───────────────────────────────────── */
+
+/* 1. Vibrating beam — Card 1
+   Oscillates between upward and downward half-sine deflection.
+   True beam (red) and model (blue-dashed) vibrate slightly out of phase. */
+(function() {
+  const beamTrue  = document.getElementById('beam-true');
+  const beamModel = document.getElementById('beam-model');
+  const beamError = document.getElementById('beam-error');
+  if (!beamTrue) return;
+
+  let t = 0;
+  function animateBeam() {
+    t += 0.03;
+    const amp  = Math.sin(t) * 48;       // true beam amplitude
+    const ampM = Math.sin(t + 0.4) * 42; // model slightly out of phase & smaller
+
+    const cy1T = 90 - amp;   // true: upward control point
+    const cy2T = 90 + amp;
+    const cy1M = 90 - ampM;
+    const cy2M = 90 + ampM;
+
+    beamTrue.setAttribute('d',
+      `M 30 90 Q 100 ${cy1T} 160 90 Q 220 ${cy2T} 290 90`);
+    beamModel.setAttribute('d',
+      `M 30 90 Q 110 ${cy1M} 160 90 Q 215 ${cy2M} 290 90`);
+    beamError.setAttribute('d',
+      `M 30 90 Q 100 ${cy1T} 160 90 Q 220 ${cy2T} 290 90 ` +
+      `Q 215 ${cy2M} 160 90 Q 110 ${cy1M} 30 90`);
+
+    requestAnimationFrame(animateBeam);
+  }
+  animateBeam();
+})();
+
+/* 2. Building sway — Card 2
+   The floor-level arrows shift left/right to mimic earthquake sway. */
+(function() {
+  const sway = document.getElementById('building-sway');
+  if (!sway) return;
+
+  let t = 0;
+  function animateSway() {
+    t += 0.025;
+    // Each floor sways more at higher levels (mode shape)
+    const dx3 = Math.sin(t) * 10;      // top floor — most
+    const dx2 = Math.sin(t) * 6;
+    const dx1 = Math.sin(t) * 2;       // bottom floor — least
+    sway.setAttribute('transform', '');
+    const lines = sway.querySelectorAll('line');
+    // Floor 3 (top arrow)
+    lines[0].setAttribute('x1', 215 + dx3); lines[0].setAttribute('x2', 238 + dx3);
+    // Floor 2
+    lines[1].setAttribute('x1', 215 + dx2); lines[1].setAttribute('x2', 232 + dx2);
+    // Floor 1
+    lines[2].setAttribute('x1', 215 + dx1); lines[2].setAttribute('x2', 226 + dx1);
+    requestAnimationFrame(animateSway);
+  }
+  animateSway();
+})();
+
+/* 3. Parameter tracking draw — Card 5
+   Repeatedly draws the convergence line from left to right, then resets. */
+(function() {
+  const line = document.getElementById('param-line');
+  if (!line) return;
+
+  const total = 300;
+  let offset = total;
+  let dir = -1; // drawing forward
+
+  function animateParam() {
+    offset += dir * 1.2;
+    if (offset <= 0)  { offset = 0;  setTimeout(() => { offset = total; }, 1200); }
+    if (offset > total) offset = total;
+    line.setAttribute('stroke-dashoffset', offset);
+    requestAnimationFrame(animateParam);
+  }
+  animateParam();
+})();
+
+/* ── Filter cards ───────────────────────────────────────── */
 function filterCards(tag, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
