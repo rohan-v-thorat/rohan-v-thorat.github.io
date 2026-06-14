@@ -411,17 +411,17 @@ a:hover { color: var(--accent); }
 @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 
 /* ── 3D ring showcase ────────────────────────────────────── */
-.showcase { border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-.showcase-head { text-align:center; padding:48px 20px 0; }
+.showcase { border-bottom: 1px solid var(--border); padding-bottom: 24px; }
+.showcase-head { text-align:center; padding:72px 20px 0; }
 .showcase-head .eyebrow {
-  font-size:0.68rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted);
+  font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); font-weight:600;
 }
 .showcase-head h2 {
-  font-size:clamp(1.6rem,4vw,2.4rem); font-weight:800; letter-spacing:-0.03em; margin-top:10px;
+  font-size:clamp(1.7rem,4vw,2.5rem); font-weight:800; letter-spacing:-0.03em; margin-top:14px;
 }
 .stage {
   perspective: 1500px; height: 560px;
-  display: flex; align-items: center; justify-content: center; margin-top: 10px;
+  display: flex; align-items: center; justify-content: center; margin-top: 40px;
 }
 .ring {
   position: relative; width: 380px; height: 440px;
@@ -455,7 +455,7 @@ a:hover { color: var(--accent); }
 .f-link { align-self:flex-start; font-size:0.7rem; font-weight:600; letter-spacing:0.08em;
           text-transform:uppercase; color:var(--text); border-bottom:1px solid var(--text); padding-bottom:2px; }
 .f-link:hover { color:var(--accent); border-color:var(--accent); }
-.showcase .hint { text-align:center; color:var(--muted); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; padding-bottom:8px; }
+.showcase .hint { text-align:center; color:var(--text); font-size:0.78rem; letter-spacing:0.12em; text-transform:uppercase; margin-top:40px; padding-bottom:8px; }
 @media (max-width: 768px) {
   .stage { transform: scale(0.72); transform-origin: center top; height: 420px; }
 }
